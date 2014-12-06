@@ -240,7 +240,75 @@ class Art():
         else:
             self.draw_alarm = None
 
+
+# lblonk: code below added to create large images, and save these to disk ----------------------------------------------
+from PIL import Image
+
+class PILArt():
+    """
+    PIL based random art.
+    Can save image to disk
+    """
+
+    def __init__(self,size = 512):
+        """
+        pars:
+            size : int ; width and height of output image in pixels
+        """
+        self.size = size
+        self.art = generate(random.randrange(20,150))
+        self.image = Image.new("RGB", (self.size, self.size), "white")
+
+    def paint(self):
+        """ paint the art
+        """
+        pix = self.image.load()
+
+        for i in range(self.size):
+            for j in range(self.size):
+
+                u = -1. + 2*float(i)/self.size
+                v = -1. + 2*float(j)/self.size
+                (r,g,b) = self.art.eval(u,v)
+                pix[(i,j)] = rgb255(r,g,b)
+
+            print 'painting row ' , i+1 , ' of ', self.size
+
+    def save(self, filename):
+        """ save image to disk
+        """
+        self.image.save(filename + ".png", "png")
+
+
+def rgb255(r, b, g):
+    #convert to rgb255 eg (255,255,255)
+    u = max(0, min(255, int(128 * (r + 1))))
+    v = max(0, min(255, int(128 * (g + 1))))
+    w = max(0, min(255, int(128 * (b + 1))))
+    return u, v, w
+
+
+
 # Main program
-win = Tk()
-arg = Art(win)
-win.mainloop()
+
+
+# original ---- uncomment the three lines below to get the original GUI ------------------------------------------------
+
+# win = Tk()
+# arg = Art(win)
+# win.mainloop()
+
+
+
+# new - PIL based - stores image on disk -------------------------------------------------------------------------------
+
+#create art
+art = PILArt(size = 512)
+art.paint()
+
+#save
+import datetime
+now  = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+filename = ' random-art-created-at-' + now
+art.save(filename)
+
