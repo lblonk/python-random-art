@@ -16,7 +16,7 @@ I kept the program as simple as possible, and independent of any non-standard
 Python libraries. Consequently, a number of improvements and further
 experiments are possible:
 
-* The most pressing problem right now is that the image is displayed as a
+* The most pressing problem right now (blnk - solved now) is that the image is displayed as a
   large number of rectangles of size 1x1 on the tkinter Canvas, which
   consumes a great deal of memory. You will not be able to draw large images
   this way. An improved version would use the Python imagining library (PIL)
@@ -35,4 +35,4 @@ experiments are possible:
 
 For more information and further discussion, see http://math.andrej.com/category/random-art/
 
-You need Python 2.7 or later to run the program. To start the program, run `randomart.py` from command-line or from the Python IDE *IDLE*.
+You need Python 3.5 and numpy or later to run the program. To start the program, run `randomart.py` from command-line or from the Python IDE *IDLE*.
