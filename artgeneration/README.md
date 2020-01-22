@@ -11,8 +11,7 @@ of two orders of magnitude (roughly 100 times faster)
 In addition, as also advised by Andrey in his 'further work' section, the PIL library is used for display of the image. 
 This, combined with the faster execution time, facilitates painting much larger picures than the original version. 
 
-Finally, in this branch; a famous fractal; the mandlebrot set, is included. 
+Finally, in this branch; a famous fractal; the mandlebrot set (admittedly not random), is included. 
 
 You need Python 3.5 and numpy or later to run the program. 
-To start the program, run `python randomart.py` from the command-line,
-or from a Python IDE such as pycharm
+To start the program, run `python randomart.py`

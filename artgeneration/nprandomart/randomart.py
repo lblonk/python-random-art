@@ -56,7 +56,7 @@ class VariableY():
 class Constant():
     arity = 0
     def __init__(self):
-        self.c1 = random.uniform(0,1)
+        self.c1 = random.uniform(0, 1)
         self.c2 = random.uniform(0, 1)
         self.c3 = random.uniform(0, 1)
 
@@ -68,40 +68,14 @@ class Constant():
                                 np.ones(SIZE_2D)*self.c3)
 
 
-#TODO: random zoom point mandle
-# Points on the boundary of the Mandelbrot set generally have the most interesting orbits.  The easiest boundary points to compute are:
-#
-# * the spike along the negative real axis
-# * the boundary of the main cardioid: r = (1 - cos(theta))/2, x = r*cos(theta)+0.25, y = r*sin(theta)
-# * the boundary of the period 2 disk: r = 0.25, x = r*cos(theta)-1, y = r*sin(theta)
-
-# TODO: faster numba implementation: https://www.ibm.com/developerworks/community/blogs/jfp/entry/How_To_Compute_Mandelbrodt_Set_Quickly?lang=en
-
-def calculate_mandle_image(image_size=SIZE_1D, iterations=256):
-    dx = (.6685, .005)  # X start position, X width, chosen at a nice-looking location
-    dy = (-.1905, .005)  # Y start position, Y width, chosen at a nice-looking location
-    v = np.zeros((image_size, image_size), 'float32')  # The color matrix
-    # Create the const matrix and initialize it
-    c = np.zeros((image_size, image_size), 'complex')
-    c[:].real = np.linspace(dy[0], dy[0] + dy[1], image_size)[:, None]
-    c[:].imag = np.linspace(dx[0], dx[0] + dx[1], image_size)[None, :]
-    z = c.copy()
-    print('doing mandlebrot image generation..')
-    for i in range(iterations):
-        z *= z  # Compute z = z*z
-        z += c  # Compute z = z + c
-        # Set colors for which z has diverged
-        v += (np.abs(z) >= 4) * (v == 0) * i
-    print('finished mandlebrot image generation')
-    return v / np.max(v)
-
-mandle = calculate_mandle_image()
+from .mandle import calculate_mandle_image
 class Mandle():
     arity = 0
+    mandle = calculate_mandle_image(image_size=SIZE_1D)
     def __init__(self): pass
     def __repr__(self): return "mandlebrot"
     def eval(self, x, y):
-        return (mandle,mandle,mandle)
+        return (self.mandle,self.mandle,self.mandle)
 
 class Average():
     arity = 2
