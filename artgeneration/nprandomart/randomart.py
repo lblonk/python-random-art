@@ -56,7 +56,7 @@ class VariableY():
 class Constant():
     arity = 0
     def __init__(self):
-        self.c1 = random.uniform(0,1)
+        self.c1 = random.uniform(0, 1)
         self.c2 = random.uniform(0, 1)
         self.c3 = random.uniform(0, 1)
 
@@ -66,6 +66,16 @@ class Constant():
     def eval(self,x,y): return (np.ones(SIZE_2D)*self.c1,
                                 np.ones(SIZE_2D)*self.c2,
                                 np.ones(SIZE_2D)*self.c3)
+
+
+from .mandle import calculate_mandle_image
+class Mandle():
+    arity = 0
+    mandle = calculate_mandle_image(image_size=SIZE_1D)
+    def __init__(self): pass
+    def __repr__(self): return "mandlebrot"
+    def eval(self, x, y):
+        return (self.mandle,self.mandle,self.mandle)
 
 class Average():
     arity = 2
@@ -103,9 +113,9 @@ class Mod():
         (r1,g1,b1) = self.e1.eval(x,y)
         (r2,g2,b2) = self.e2.eval(x,y)
         try:
-            r3 = np.where(r2>0,np.remainder(r1,r2),1.)
-            g3 = np.where(g2>0,np.remainder(g1,g2),1.)
-            b3 = np.where(b2>0,np.remainder(b1,b2),1.)
+            r3 = np.where(r2>0,np.remainder(r1,r2),0.)
+            g3 = np.where(g2>0,np.remainder(g1,g2),0.)
+            b3 = np.where(b2>0,np.remainder(b1,b2),0.)
             return (r3, g3, b3)
         except:
             return (np.zeros(SIZE_2D),np.zeros(SIZE_2D),np.zeros(SIZE_2D))
@@ -180,7 +190,7 @@ class Mix():
 # The following list of all classes that are used for generation of 
 # expressions is used by the generate function below.
 
-operators = (VariableX, VariableY, Constant, Average, Product, Mod, Sin, Tent, Well, Level, Mix)
+operators = (VariableX, VariableY, Constant, Mandle, Average, Product, Mod, Sin, Tent, Well, Level, Mix)
 
 # We precompute those operators that have arity 0 and arity > 0
 
