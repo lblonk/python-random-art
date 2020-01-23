@@ -23,11 +23,11 @@ def create_app(test_config=None):
         pass
 
     # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
+    @app.route('/')
+    def index():
+        return f"<a href={url_for('image')} > image </a>"
 
-    @app.route('/image')
+    @app.route('/image/')
     def image():
         return '<img src=' + url_for('static', filename='mandlegradient.bmp') + '>'
 

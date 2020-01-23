@@ -1,0 +1,1 @@
+from .randomart import generate
