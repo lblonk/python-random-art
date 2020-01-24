@@ -2,6 +2,7 @@
 A modified version of the original 'simple-random-art' tkinter app,
 with added image save/load, and expression-tree-to-json buttons
 """
+
 from nprandomart import generate
 from nprandomart.randomart import SIZE_2D, SIZE_1D
 from tkinter import *
