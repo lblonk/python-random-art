@@ -1,12 +1,13 @@
 import os
-from flask import Flask, redirect, url_for
+from flask import Flask, url_for
+from .getimage import get_image
+from pathlib import Path
 
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
     )
 
     if test_config is None:
@@ -22,13 +23,15 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # a simple page that says hello
     @app.route('/')
     def index():
-        return f"<a href={url_for('image')} > image </a>"
+        img = get_image()
+        dest_path = Path(app.root_path) /'static/newimage.bmp'
 
-    @app.route('/image/')
-    def image():
-        return '<img src=' + url_for('static', filename='mandlegradient.bmp') + '>'
+        if not dest_path.parent.exists():
+            dest_path.parent.mkdir()
+        img.save(dest_path)
+        return '<p>(refresh for new image)<p>' \
+               '<img src=' + url_for('static', filename='newimage.bmp') + '>'
 
     return app

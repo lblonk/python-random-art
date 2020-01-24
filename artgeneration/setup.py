@@ -1,6 +1,5 @@
 from distutils.core import setup
 
-
 setup(name='nprandomart',
       version='1.0',
       description='random art using numpy',
@@ -8,4 +7,5 @@ setup(name='nprandomart',
       author_email='',
       url='',
       packages=['nprandomart'],
+      requires=['np','numba','Pillow']
      )

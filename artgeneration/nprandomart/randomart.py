@@ -6,7 +6,7 @@
 import random
 import numpy as np
 np.seterr(divide='ignore', invalid='ignore')
-SIZE_1D = 900 #TODO: make variable
+SIZE_1D = 500 #TODO: make variable
 SIZE_2D = (SIZE_1D,SIZE_1D)
 
 # Utility functions
@@ -55,7 +55,7 @@ class Constant():
         self.c3 = random.uniform(0, 1)
 
     def __repr__(self):
-        return 'Constant(%g,%g,%g)' % self.c
+        return 'Constant(%g,%g,%g)' % (self.c1, self.c2,self.c3)
 
     def eval(self,x,y): return (np.ones(SIZE_2D)*self.c1,
                                 np.ones(SIZE_2D)*self.c2,
