@@ -6,7 +6,7 @@
 import random
 import numpy as np
 np.seterr(divide='ignore', invalid='ignore')
-SIZE_1D = 500 #TODO: make variable
+SIZE_1D = 900 #TODO: make variable
 SIZE_2D = (SIZE_1D,SIZE_1D)
 
 # Utility functions
