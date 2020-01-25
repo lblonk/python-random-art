@@ -1,5 +1,5 @@
 import os
-from flask import Flask, url_for
+from flask import Flask, url_for, render_template
 from .getimage import get_image
 from pathlib import Path
 
@@ -31,7 +31,6 @@ def create_app(test_config=None):
         if not dest_path.parent.exists():
             dest_path.parent.mkdir()
         img.save(dest_path)
-        return '<p>(refresh for new image)<p>' \
-               '<img src=' + url_for('static', filename='newimage.bmp') + '>'
+        return render_template('image.html')
 
     return app

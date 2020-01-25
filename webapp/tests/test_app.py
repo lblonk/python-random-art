@@ -1,5 +1,6 @@
 import pytest
 from rawebapp import create_app
+from flask_testing import TestCase
 
 @pytest.fixture
 def app():
@@ -16,4 +17,4 @@ def runner(app):
 
 def test_new_image(client):
     response = client.get('/')
-    assert response.data == b'<img src=/static/newimage.bmp>'
+    assert 'src=/static/newimage.bmp>' in str(response.data) #TODO more thorough test

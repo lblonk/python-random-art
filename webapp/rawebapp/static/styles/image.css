@@ -1,0 +1,14 @@
+body {
+    background-color: black;
+    margin: auto;
+}
+#refresh {
+    font-family: 'Century Gothic', serif;
+    color: dimgrey;
+    text-align: center;
+}
+#image{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
