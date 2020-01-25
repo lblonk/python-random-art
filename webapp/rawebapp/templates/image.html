@@ -4,11 +4,19 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='styles/image.css')}}">
     <title>image</title>
 </head>
-<body>
-<p id="refresh">refresh for new image
-</p>
+<!--<body>-->
+<!--<p id="refresh">refresh for new image-->
+<!--</p>-->
 <p>
-    <img alt="image" id="image" src=/static/newimage.bmp>
+<form id="new_img_btn_p" action= "/">
+    <input id="new_image_btn"
+           type="submit"
+           value="Show Me Something New">
+</form>
+</p>
+
+<p>
+    <img alt="image" id="image" src="/image_file?url=...">
 </p>
 </body>
 </html>

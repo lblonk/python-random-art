@@ -2,11 +2,28 @@ body {
     background-color: black;
     margin: auto;
 }
-#refresh {
-    font-family: 'Century Gothic', serif;
-    color: dimgrey;
+/*#refresh {*/
+/*    font-family: 'Century Gothic', serif;*/
+/*    color: dimgrey;*/
+/*    text-align: center;*/
+/*}*/
+
+#new_img_btn_p{
     text-align: center;
 }
+
+input{
+    font-family: 'Century Gothic',serif;
+    color: white;
+    border: none;
+    position: center;
+    padding: 15px 32px;
+    font-size: 16px;
+    text-align: center;
+    display: inline-block;
+    background-color: dimgrey;
+}
+
 #image{
     display: block;
     margin-left: auto;
