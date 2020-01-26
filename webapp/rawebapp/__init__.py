@@ -1,7 +1,7 @@
 import os,io
-from flask import Flask, url_for, render_template,send_file
+from flask import Flask, url_for, render_template, Response
 from .getimage import get_image
-from pathlib import Path
+from werkzeug.wsgi import FileWrapper
 
 def create_app(test_config=None):
     # create and configure the app
@@ -41,9 +41,11 @@ def create_app(test_config=None):
         output = io.BytesIO()
         img.convert('RGBA').save(output, format='PNG')
         output.seek(0, 0)
-        return send_file(output,mimetype='image/png', as_attachment=False)
+        # return send_file(output,mimetype='image/png', as_attachment=False,cache_timeout=0.0)
+        w = FileWrapper(output) #this is needed since Flask's send_file() does not work on pythonanywhere: https://www.pythonanywhere.com/forums/topic/13570/
+        return Response(w, mimetype="image/png", direct_passthrough=True)
 
-    app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0  # crude solution to avoid browser caching generated images
+    # app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0  # crude solution to avoid browser caching generated images
 
 
     return app
