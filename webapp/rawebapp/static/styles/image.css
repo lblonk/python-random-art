@@ -2,18 +2,13 @@ body {
     background-color: black;
     margin: auto;
 }
-/*#refresh {*/
-/*    font-family: 'Century Gothic', serif;*/
-/*    color: dimgrey;*/
-/*    text-align: center;*/
-/*}*/
 
-#new_img_btn_p{
+#new_img_btn_p {
     text-align: center;
 }
 
-input{
-    font-family: 'Century Gothic',serif;
+input {
+    font-family: 'Century Gothic', serif;
     color: white;
     border: none;
     position: center;
@@ -24,8 +19,53 @@ input{
     background-color: dimgrey;
 }
 
-#image{
+#image {
+    font-family: 'Century Gothic', serif;
+    position: center;
     display: block;
     margin-left: auto;
     margin-right: auto;
+    color: white;
+    text-align: center;
+    min-width: 900px;
+    min-height: 900px;
+
+}
+
+#expression_tree {
+    text-align: center;
+}
+
+#expr_title {
+    color: grey;
+    font-family: 'Century Gothic', serif;
+    font-size: 13px;
+}
+
+#expr_extra{
+    color: grey;
+    font-family: 'Century Gothic', serif;
+    font-size: 10px;
+}
+
+.content {
+    text-align: left;
+    display: inline-block;
+}
+
+
+pre {
+    display: inline-block;
+    color: grey;
+    font-size: 12px;
+    text-align: left;
+    font-family: 'Consolas', serif;
+
+}
+
+#source_code{
+    text-align: center;
+    color: grey;
+     font-family: 'Century Gothic', serif;
+    font-size: 10px;
 }

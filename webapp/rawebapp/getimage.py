@@ -4,8 +4,12 @@ import random
 import numpy as np
 from PIL import Image
 
-def get_image():
-    art = generate(random.randrange(20,150))
+def get_art():
+    art = generate (random.randrange(20, 150))
+    return art
+
+def get_image(art):
+
     u,v = np.meshgrid(np.linspace(0,1,SIZE_1D),np.linspace(0,1,SIZE_1D))
     print('evaluating expressions')
     (r, g, b) = art.eval(u, v)
@@ -16,6 +20,7 @@ def get_image():
     rgbArray[..., 2] = b * 256
     img = Image.fromarray(rgbArray)
     return img
+
 
 
 

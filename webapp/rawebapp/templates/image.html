@@ -1,22 +1,41 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="{{ url_for('static',filename='styles/image.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='styles/image.css')}}">
     <title>image</title>
 </head>
-<!--<body>-->
-<!--<p id="refresh">refresh for new image-->
-<!--</p>-->
-<p>
-<form id="new_img_btn_p" action= "/">
+<body>
+<form id="new_img_btn_p" action="/">
     <input id="new_image_btn"
            type="submit"
            value="Show Me Something New">
 </form>
-</p>
 
 <p>
-    <img alt="image" id="image" src="/image_file">
+    <img id="image" src="{{image_endpoint}}">
 </p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<div id="expression_tree">
+    <p id='expr_title'>Image DNA </p>
+    <p id='expr_extra'>This nested expression is evaluated for each pixel (X and Y coordinate) in the image to yield the values for red, green & blue </p>
+    <div id="content">
+        <pre>{{expression_tree}}</pre>
+    </div>
+</div>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<p>&nbsp</p>
+<div id="source_code">
+    <a href="https://github.com/lblonk/simple-random-art">
+        source code
+    </a>
+    <p>&nbsp</p>
+</div>
 </body>
 </html>
