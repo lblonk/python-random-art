@@ -2,9 +2,6 @@ import os,io
 from flask import Flask, url_for, render_template, Response, Markup, json, jsonify
 from .getimage import get_image, get_art
 from werkzeug.wsgi import FileWrapper
-import jsonpickle
-import json
-import yaml
 import uuid
 from nprandomart import tree_string
 
@@ -42,15 +39,9 @@ def create_app(test_config=None):
         app.expression_trees[art_id] = art
 
         # create pretty text representation of expression tree
-        pickled_art = jsonpickle.encode(art)
-        pickled_art_lean = pickled_art.\
-            replace('py/object','_operator').\
-            replace('nprandomart.randomart.','')
-        pickled_art_yaml = yaml.dump({"e0": json.loads(pickled_art_lean)},indent=7,sort_keys=True)
-
-        # todo: plot tree with 2d plot at each node for each op,
-        #  using http://etetoolkit.org/docs/latest/tutorial/tutorial_drawing.html#id30
         tree_ascii = tree_string(art)
+        # todo: plot tree with 2d plot of function at each node for each op,
+        #  using http://etetoolkit.org/docs/latest/tutorial/tutorial_drawing.html#id30
 
         # return html page
         return render_template('image.html',

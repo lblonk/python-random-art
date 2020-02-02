@@ -19,6 +19,7 @@ def get_image(art):
     rgbArray[..., 1] = g * 256
     rgbArray[..., 2] = b * 256
     img = Image.fromarray(rgbArray)
+    img.art = art
     return img
 
 

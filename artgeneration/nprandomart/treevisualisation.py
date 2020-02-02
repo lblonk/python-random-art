@@ -8,13 +8,13 @@ def tree_string(art):
     """
 
     t = ete3.Tree()
-    img = t.add_child(name="IMAGE--")
+    img = t.add_child(name="R,G,B = F(X,Y) :")
 
     def repr(op, t):
         if op.arity == 0:
             t.add_child(name='--'+str(op))
         else:
-            ch = t.add_child(name='--'+ str(op))#type(op).__name__)
+            ch = t.add_child(name='--'+ str(op))
             for k, v in vars(op).items():
                 if k in ['e','e1','e2','level']:
                     repr(v, ch)
