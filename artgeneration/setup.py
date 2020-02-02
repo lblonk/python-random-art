@@ -7,5 +7,5 @@ setup(name='nprandomart',
       author_email='',
       url='',
       packages=['nprandomart'],
-      requires=['numpy','numba','Pillow']
+      requires=['numpy','numba','Pillow','ete3']
      )

@@ -6,6 +6,6 @@ def test_generate():
     assert type(art) in operators
 
 def test_randomness():
-    art1 = generate(k=5)
-    art2 = generate(k=5)
+    art1 = generate(k=10)
+    art2 = generate(k=10)
     assert not str(art1) == str(art2)  # admittedly; not a very thorough test
