@@ -8,7 +8,7 @@ body {
 }
 
 input {
-    font-family: 'Century Gothic', serif;
+    font-family: "Century Gothic", Century, serif;
     color: white;
     border: none;
     position: center;
