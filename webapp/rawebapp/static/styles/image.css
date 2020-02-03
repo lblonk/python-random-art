@@ -34,6 +34,7 @@ input {
 
 #expression_tree {
     text-align: center;
+    max-width: 900px;
 }
 
 #expr_title {
@@ -60,6 +61,8 @@ pre {
     font-size: 12px;
     text-align: left;
     font-family: 'Consolas',Consolas ,monospace;
+    max-width: 900px;
+    overflow:scroll;
 
 }
 
