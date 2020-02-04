@@ -17,4 +17,4 @@ def runner(app):
 
 def test_new_image(client):
     response = client.get('/')
-    assert 'src=/static/newimage.bmp>' in str(response.data) #TODO more thorough test
+    assert 'action="/higher"' in str(response.data) #TODO more thorough test

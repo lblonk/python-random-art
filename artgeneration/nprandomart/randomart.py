@@ -38,13 +38,13 @@ def tent(x):
 class VariableX():
     arity = 0
     def __init__(self): pass
-    def __repr__(self): return "X"
+    def __repr__(self): return "ReturnX(X,Y)"
     def eval(self,x,y): return (x,x,x)
 
 class VariableY():
     arity = 0
     def __init__(self): pass
-    def __repr__(self): return "Y"
+    def __repr__(self): return "ReturnY(X,Y)"
     def eval(self,x,y): return (y,y,y)
 
 class Constant():
@@ -55,7 +55,7 @@ class Constant():
         self.c3 = random.uniform(0, 1)
 
     def __repr__(self):
-        return 'Constant(%g,%g,%g)' % (self.c1, self.c2,self.c3)
+        return f'ConstantColor(r={self.c1:.2f},g={self.c2:.2f},b={self.c3:.2f})'
 
     def eval(self,x,y): return (np.ones(SIZE_2D)*self.c1,
                                 np.ones(SIZE_2D)*self.c2,
@@ -76,7 +76,7 @@ class Average():
         self.e1 = e1
         self.e2 = e2
     def __repr__(self):
-        return 'Sum()'
+        return 'Average(E1,E2)'
     def eval(self,x,y):
         return average(self.e1.eval(x,y), self.e2.eval(x,y))
 
@@ -86,7 +86,7 @@ class Product():
         self.e1 = e1
         self.e2 = e2
     def __repr__(self):
-        return 'Product()'
+        return 'Product(E1,E2)'
     def eval(self,x,y):
         (r1,g1,b1) = self.e1.eval(x,y)
         (r2,g2,b2) = self.e2.eval(x,y)
@@ -101,7 +101,7 @@ class Mod():
         self.e1 = e1
         self.e2 = e2
     def __repr__(self):
-        return 'Mod()'
+        return 'Modulo(E1,E2)'
     def eval(self,x,y):
         (r1,g1,b1) = self.e1.eval(x,y)
         (r2,g2,b2) = self.e2.eval(x,y)
@@ -118,7 +118,7 @@ class Well():
     def __init__(self, e):
         self.e = e
     def __repr__(self):
-        return 'Well()'
+        return 'WellFunction(E1)'
     def eval(self,x,y):
         (r,g,b) = self.e.eval(x,y)
         return (well(r), well(g), well(b))
@@ -128,7 +128,7 @@ class Tent():
     def __init__(self, e):
         self.e = e
     def __repr__(self):
-        return 'Tent()'
+        return 'TentFunction(E1)'
     def eval(self,x,y):
         (r,g,b) = self.e.eval(x,y)
         return (tent(r), tent(g), tent(b))
@@ -140,7 +140,7 @@ class Sin():
         self.phase = random.uniform(0, np.pi)
         self.freq =  random.uniform(1.0, 6.0)
     def __repr__(self):
-        return 'Sin(%g + %g)' % (self.phase, self.freq)
+        return f'Sine(E1)(phase={self.phase:.2f},freq={self.freq:.2f})'
     def eval(self,x,y):
         (r1,g1,b1) = self.e.eval(x,y)
         r2 = np.sin(self.phase + self.freq * r1)
@@ -156,7 +156,7 @@ class Level():
         self.e1 = e1
         self.e2 = e2
     def __repr__(self):
-        return 'Level(%g)' % (self.treshold)
+        return f'Level(E1,E2,E3)(treshold={self.treshold:.2f})'
     def eval(self,x,y):
         (r1, g1, b1) = self.level.eval(x,y)
         (r2, g2, b2) = self.e1.eval(x,y)
@@ -173,9 +173,9 @@ class Mix():
         self.e1 = e1
         self.e2 = e2
     def __repr__(self):
-        return 'Mix(%s)' % (self.w)
+        return 'Mix(E1,E2)'
     def eval(self,x,y):
-        # w = 0.5 * (self.w.eval(x,y)[0] + 1.0)
+        # w = 0.5 * (self.w.eval(x,y)[0] + 1.0) #TODO: fix
         c1 = self.e1.eval(x,y)
         c2 = self.e2.eval(x,y)
         return average(c1,c2,)
