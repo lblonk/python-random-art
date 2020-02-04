@@ -4,8 +4,8 @@ import random
 import numpy as np
 from PIL import Image
 
-def get_art():
-    art = generate (random.randrange(20, 150))
+def get_art(min_arity = 20, max_arity = 150):
+    art = generate (random.randrange(min_arity, max_arity))
     return art
 
 def get_image(art):

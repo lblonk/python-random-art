@@ -3,7 +3,7 @@ from flask import Flask, url_for, render_template, Response, Markup, json, jsoni
 from .getimage import get_image, get_art
 from werkzeug.wsgi import FileWrapper
 import uuid
-from nprandomart import tree_string
+from nprandomart import tree_as_ascii
 
 def create_app(test_config=None):
 
@@ -26,32 +26,62 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    app.expression_trees = LimitedSizeDict(size_limit=100)
+    # a dict to hold the arts (expression trees) in memory so they can be used by multiple functions
+    # (only the key 'art_id' is passed in the url to the endpoints)
+    app.arts = LimitedSizeDict(size_limit=200)
+
+    def get_art_id(min_arity = 20, max_arity = 150):
+        """
+        generate and store the art (expression tree), return its id
+        :param min_arity: minimum complexity of the art
+        :param max_arity: maximum complexity of the art
+        """
+        art_id = uuid.uuid4().hex
+
+        # make expression tree
+        art = get_art(min_arity , max_arity)
+
+        # store so it can be passed to other app functions by id
+        app.arts[art_id] = art
+        return art_id
+
+    def get_ascii(art_id):
+        """ 
+        return pretty text representation (ASCII-art) of expression tree
+
+        """""
+        art = app.arts[art_id]
+        tree_ascii = tree_as_ascii(art)
+        return tree_ascii
+
+        # todo: plot tree with 2d plot of function result at each node for each operator,
+        # using http://etetoolkit.org/docs/latest/tutorial/tutorial_drawing.html#id30
+
+    def render_page(art_id,ascii):
+        return render_template('image.html',
+                               image_endpoint = url_for('image_file',art_id=art_id),
+                               expression_tree = ascii)
 
     @app.route('/')
     def index():
+        """ 1st call: the landing page."""
+        art_id = get_art_id(min_arity=15,max_arity=30) # lower arity to start with to reduce initial loading time.
+        ascii = get_ascii(art_id)
+        return render_page(art_id,ascii)
 
-        # make expression tree
-        art = get_art()
-
-        # store so it can be passed to other app functions by id
-        art_id = uuid.uuid4().hex
-        app.expression_trees[art_id] = art
-
-        # create pretty text representation of expression tree
-        tree_ascii = tree_string(art)
-        # todo: plot tree with 2d plot of function at each node for each op,
-        #  using http://etetoolkit.org/docs/latest/tutorial/tutorial_drawing.html#id30
-
-        # return html page
-        return render_template('image.html',
-                               image_endpoint = url_for('image_file',art_id=art_id),
-                               expression_tree = tree_ascii)
+    @app.route('/higher')
+    def subsequent_calls():
+        """ for subsequent calls (when the user clicks the button); return image of higher complexity"""
+        art_id = get_art_id(min_arity=30,max_arity=80)
+        ascii = get_ascii(art_id)
+        return render_page(art_id, ascii)
 
     @app.route('/image_file/<art_id>')
     def image_file(art_id):
-
-        art = app.expression_trees[art_id]
+        """
+        render and return the image itself
+        """
+        art = app.arts[art_id]
         img = get_image(art)
         output = io.BytesIO()
         img.convert('RGBA').save(output, format='PNG')
@@ -62,7 +92,7 @@ def create_app(test_config=None):
     return app
 
 
-# special dict that keeps (only) the recent expression trees in memory
+# A utility: a special dict that keeps (only) the recent expression trees in memory
 from collections import OrderedDict
 
 class LimitedSizeDict(OrderedDict):

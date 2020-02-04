@@ -1,6 +1,6 @@
 import ete3
 
-def tree_string(art):
+def tree_as_ascii(art):
     """
     return a ascii art (string) showing the structure of the expression tree
     :param art:

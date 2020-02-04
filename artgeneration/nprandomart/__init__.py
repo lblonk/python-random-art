@@ -1,2 +1,2 @@
 from .randomart import generate
-from .treevisualisation import tree_string
+from .treevisualisation import tree_as_ascii
