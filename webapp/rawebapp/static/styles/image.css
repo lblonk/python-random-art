@@ -34,7 +34,7 @@ input {
 
 #expression_tree {
     text-align: center;
-    max-width: 900px;
+    /*max-width: 900px;*/
 }
 
 #expr_title {
@@ -49,9 +49,13 @@ input {
     font-size: 10px;
 }
 
-.content {
-    text-align: left;
+#ascii_content {
+    text-align: center;
     display: inline-block;
+    /*max-width:900px;*/
+    max-width: 100vw;
+    overflow-x:scroll;
+
 }
 
 
@@ -61,14 +65,12 @@ pre {
     font-size: 12px;
     text-align: left;
     font-family: 'Consolas',Consolas ,monospace;
-    max-width: 900px;
-    overflow:scroll;
 
 }
 
 #source_code{
     text-align: center;
     color: grey;
-     font-family: 'Century Gothic', serif;
+    font-family: 'Century Gothic', serif;
     font-size: 10px;
 }
