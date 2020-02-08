@@ -207,3 +207,7 @@ def generate(k = 50):
             i = j
         args.append(generate(k - 1 - i))
         return op(*args)
+
+def get_art(min_arity = 20, max_arity = 150):
+    art = generate (random.randrange(min_arity, max_arity))
+    return art

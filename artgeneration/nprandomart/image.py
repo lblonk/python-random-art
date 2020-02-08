@@ -1,12 +1,7 @@
-from nprandomart import generate
 from nprandomart.randomart import SIZE_1D
-import random
 import numpy as np
 from PIL import Image
 
-def get_art(min_arity = 20, max_arity = 150):
-    art = generate (random.randrange(min_arity, max_arity))
-    return art
 
 def get_image(art):
 
@@ -19,9 +14,4 @@ def get_image(art):
     rgbArray[..., 1] = g * 256
     rgbArray[..., 2] = b * 256
     img = Image.fromarray(rgbArray)
-    img.art = art
     return img
-
-
-
-

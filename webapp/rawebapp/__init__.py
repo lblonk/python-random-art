@@ -1,9 +1,8 @@
 import os,io
 from flask import Flask, url_for, render_template, Response, Markup, json, jsonify
-from .getimage import get_image, get_art
 from werkzeug.wsgi import FileWrapper
 import uuid
-from nprandomart import tree_as_ascii
+from nprandomart import tree_as_ascii,get_image, get_art
 
 def create_app(test_config=None):
 
