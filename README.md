@@ -1,7 +1,7 @@
 Developed as occasional past-time;
 A python-based random art generation app.
 
-###Summary
+### Summary ###
 
 Consists of:
 
@@ -11,11 +11,11 @@ Consists of:
 
 - A web app (flask app)
 
-###Demo
+### Demo ###
 
 A demo is provided on http://blnkl.pythonanywhere.com
 
-###Installation instructions;
+### Installation instructions; ###
 
 - download python 3.7 or higher.
 
@@ -28,7 +28,7 @@ so that you have the option to tweak and add to the functions later on)
 - install the webapp package: `pip install -e .`
 - start the flask app (https://flask.palletsprojects.com/en/1.1.x/quickstart/)
 
-###Example outputs:
+### Example outputs: ###
 
 ![Alt text](webapp/rawebapp/static/example_images/purpleredorange.png?raw=true "example output")
 
