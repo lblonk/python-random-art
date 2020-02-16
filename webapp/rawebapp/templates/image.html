@@ -5,6 +5,7 @@
     <title>image</title>
 </head>
 <body>
+<p>&nbsp</p>
 <form id="new_img_btn_p" action="/higher">
     <input id="new_image_btn"
            type="submit"
@@ -22,10 +23,22 @@
 <p>&nbsp</p>
 <p>&nbsp</p>
 <div id="expression_tree">
-    <p id='expr_title'>Image DNA </p>
-    <p id='expr_extra'>This nested expression is evaluated for each pixel (X and Y coordinate) in the image to yield the values for red, green & blue </p>
-    <div id="ascii_content">
-        <pre>{{expression_tree}}</pre>
+    <p id='expr_title'>Image Tree</p>
+    <p id='expr_extra'>The built -up of the image is shown below.
+        The process is evaluated from right to left.
+        The image is generated use a nested operators (the 'tree').
+        Operators are can be simple; for example 'ReturnX' just returns the pixels x -coordinates as values
+        for red, green and blue. More complex operators, for example 'Mix' or 'Sine', take the output of one or more
+        other operators and operate on those.
+    </p>
+    <!--    <div id="ascii_content">-->
+    <!--        <pre>{{expression_tree}}</pre>-->
+    <!--    </div>-->
+    <p>&nbsp</p>
+    <p>&nbsp</p>
+    <p>&nbsp</p>
+    <div id="tree_image_content">
+        <img id="tree_image" src="{{tree_image_endpoint}}">
     </div>
 </div>
 <p>&nbsp</p>

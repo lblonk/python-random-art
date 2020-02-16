@@ -8,7 +8,8 @@ import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
 import numpy as np
 from math import floor
-from ete3 import Tree, NodeStyle
+from ete3 import Tree, NodeStyle, TreeNode
+import io
 
 plt.style.use("dark_background")  # because the webapp background is black
 
@@ -19,8 +20,7 @@ def get_tree_with_operator_images(art):
     operator has been added to each node
     """
 
-    t = Tree()
-
+    root = TreeNode()
     def repr(op, node):
         if op.arity == 0:
             ch = node.add_child(name=str(op))
@@ -34,8 +34,7 @@ def get_tree_with_operator_images(art):
 
         return node
 
-    t = repr(art, t)
-
+    t = repr(art, root)
     return t
 
 
@@ -74,8 +73,15 @@ def plot_tree_with_images(tree):
         node_axes.set_xticks([])
         node_axes.set_yticks([])
 
-        img = np.stack(node.image, axis=2)
-        node_axes.imshow(img)  # to show only r/g/b use: imshow(img[:,:,0],cmap='Reds')
+        (r, g, b) = node.image
+        rgbArray = np.zeros((r.shape[0], r.shape[1], 3), 'uint8')
+        rgbArray[..., 0] = r * 256
+        rgbArray[..., 1] = g * 256
+        rgbArray[..., 2] = b * 256
+        node_axes.imshow(rgbArray)
+
+        # img = np.stack(node.image, axis=2)
+        # node_axes.imshow(img)  # to show only r/g/b use: imshow(img[:,:,0],cmap='Reds')
         node_axes.text(node_axes.get_xlim()[1] / 2,
                        0.,
                        node.name.replace(')(', ')\n('),
@@ -83,6 +89,12 @@ def plot_tree_with_images(tree):
 
     return fig
 
+def as_bytesio(fig):
+    output = io.BytesIO()
+    plt.savefig(output, bbox_inches='tight',format='png')
+    # output.seek(0)
+    output.seek(0, 0)
+    return output
 
 def plot_tree(tree, axes):
     """
@@ -141,6 +153,7 @@ def plot_tree(tree, axes):
         nodes.append(style)
         nodex.append(x)
         nodey.append(y)
+
 
     lstyles = ['-', '--', ':']
     hline_col = LineCollection(hlinec, colors=[l['hz_line_color'] for l in hlines],
