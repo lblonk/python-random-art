@@ -5,6 +5,8 @@
 
 import random
 import numpy as np
+from pathlib import Path
+this_dir = Path(__file__).parent
 
 np.seterr(divide='ignore', invalid='ignore')
 thumbnail_size = 200
@@ -104,14 +106,17 @@ class Constant(Operator):
                                   np.ones_like(x) * self.c3)
 
 
-# from .mandle import calculate_mandle_image
-# class Mandle(Operator):
-#     arity = 0
-#     mandle = calculate_mandle_image(image_size=size)
-#     def __init__(self): pass
-#     def __repr__(self): return "mandlebrot"
-#     def eval(self, x, y):
-#         return (self.mandle,self.mandle,self.mandle)
+class Mandle(Operator):
+    arity = 0
+    mandles = {}
+    def __init__(self): pass
+
+    def __repr__(self): return "mandlebrot"
+
+    @store
+    def eval(self, x, y):
+        mandle = self.mandles[x.shape[0]]
+        return (mandle, mandle, mandle)
 
 class Average(Operator):
     arity = 2
@@ -267,7 +272,7 @@ class Mix(Operator):
 # expressions is used by the generate function below.
 
 operators = (
-VariableX, VariableY, Constant, Average, Product, Mod, Sin, Tent, Well, Level, Mix)  # ,Mandle TODO:reinstate Mandle
+VariableX, VariableY, Constant, Average, Product, Mod, Sin, Tent, Well, Level, Mix,Mandle) # TODO:reinstate Mandle
 
 # We precompute those operators that have arity 0 and arity > 0
 
@@ -277,6 +282,9 @@ operators1 = [op for op in operators if op.arity > 0]
 
 def generate(k=50):
     '''Randonly generate an expession of a given size.'''
+
+
+
     if k <= 0:
         # We used up available size, generate a leaf of the expression tree
         op = random.choice(operators0)
@@ -295,5 +303,39 @@ def generate(k=50):
 
 
 def get_art(min_arity=20, max_arity=150):
+
+    # calculate one-off operators
+
+    # mandle-brot
+    import json
+    # load list of interesting mandlebrot locations,
+    # courtesy of David Eck: http://math.hws.edu/eck/js/mandelbrot/java/MandelbrotSettings/
+    with open(this_dir / 'resources/mandle_locations.json') as f:
+        locations = json.load(f)['locations']
+
+    locations = [loc for loc in locations if loc['max_iterations'] <= 5000]
+    location = random.choice(locations)
+    xmin = location['limits']['xmin']
+    xmax = location['limits']['xmax']
+    ymin = location['limits']['ymin']
+    ymax = location['limits']['ymax']
+
+    # shift locations a bit otherwise would not be random
+    x_shift = random.uniform(-0.4, 0.4) * (xmax-xmin)
+    xmin += x_shift
+    xmax += x_shift
+    y_shift = random.uniform(-0.4, 0.4) * (ymax-ymin)
+    ymin += y_shift
+    ymax += y_shift
+
+    maxiter = location['max_iterations']
+    from .mandle import mandelbrot_set4
+    img = mandelbrot_set4(xmin, xmax, ymin, ymax, size=900, maxiter=maxiter)
+    Mandle.mandles[900] = img / img.max()
+    img = mandelbrot_set4(xmin, xmax, ymin, ymax, size=thumbnail_size, maxiter=maxiter)
+    Mandle.mandles[thumbnail_size] = img / img.max()
+
+
+    # generate operator tree
     art = generate(random.randrange(min_arity, max_arity))
     return art

@@ -92,7 +92,7 @@ def create_app(test_config=None):
         render and return the image itself
         """
         art = app.arts[art_id]
-        get_image(art, size = 100)
+        get_image(art, size = 200)
         from nprandomart.treevisualisation import get_tree_with_operator_images,plot_tree_with_images, as_bytesio
         tree = get_tree_with_operator_images(art)
         fig = plot_tree_with_images(tree)
