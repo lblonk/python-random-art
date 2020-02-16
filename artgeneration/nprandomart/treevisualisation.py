@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
 import numpy as np
 from math import floor
-from ete3 import Tree, NodeStyle, TreeNode
+from ete3 import Tree,  TreeNode
 import io
 
 plt.style.use("dark_background")  # because the webapp background is black
@@ -109,23 +109,13 @@ def plot_tree(tree, axes):
     def __draw_edge(c, x):
         h = node_pos[c]
         hlinec.append(((x, h), (x + c.dist, h)))
-        hlines.append(cstyle)
         return (x + c.dist, h)
 
     vlinec = []
-    vlines = []
     hlinec = []
-    hlines = []
-    nodes = []
     nodex = []
     nodey = []
 
-    # make lines white
-    nstyle = NodeStyle()
-    nstyle["hz_line_color"] = "white"
-    nstyle["vt_line_color"] = "white"
-    for n in tree.traverse():
-        n.set_style(nstyle)
 
     coords = {}
     node_pos = dict((n2, i) for i, n2 in enumerate(tree.get_leaves()[::-1]))
@@ -134,7 +124,6 @@ def plot_tree(tree, axes):
 
     # draw tree
     for n in node_list:
-        style = n._get_style()
         x = sum(n2.dist for n2 in n.iter_ancestors()) + n.dist
         if n.is_leaf():
             y = node_pos[n]
@@ -144,24 +133,23 @@ def plot_tree(tree, axes):
 
             # draw vertical line
             vlinec.append(((x, node_pos[n.children[0]]), (x, node_pos[n.children[-1]])))
-            vlines.append(style)
+
 
             # draw horizontal lines
             for child in n.children:
-                cstyle = child._get_style()
                 coords[child] = __draw_edge(child, x)
-        nodes.append(style)
+
         nodex.append(x)
         nodey.append(y)
 
 
-    lstyles = ['-', '--', ':']
-    hline_col = LineCollection(hlinec, colors=[l['hz_line_color'] for l in hlines],
-                               linestyle=[lstyles[l['hz_line_type']] for l in hlines],
-                               linewidth=[(l['hz_line_width'] + 1.) / 2 for l in hlines])
-    vline_col = LineCollection(vlinec, colors=[l['vt_line_color'] for l in vlines],
-                               linestyle=[lstyles[l['vt_line_type']] for l in vlines],
-                               linewidth=[(l['vt_line_width'] + 1.) / 2 for l in vlines])
+
+    hline_col = LineCollection(hlinec, colors=['white' for l in hlinec],
+                               linestyle=['-' for l in hlinec],
+                               linewidth=[1 for l in hlinec])
+    vline_col = LineCollection(vlinec, colors=['white' for l in vlinec],
+                               linestyle=['-' for l in vlinec],
+                               linewidth=[1 for l in vlinec])
 
     axes.add_collection(hline_col)
     axes.add_collection(vline_col)
