@@ -45,17 +45,6 @@ def create_app(test_config=None):
         app.arts[art_id] = art
         return art_id
 
-    def get_ascii(art_id):
-        """ 
-        return pretty text representation (ASCII-art) of expression tree
-        """""
-        art = app.arts[art_id]
-        tree_ascii = tree_as_ascii(art)
-        return tree_ascii
-
-        # todo: plot tree with 2d plot of function result at each node for each operator,
-        # using http://etetoolkit.org/docs/latest/tutorial/tutorial_drawing.html#id30
-
     def render_page(art_id):
         return render_template('image.html',
                                image_endpoint = url_for('image_file',art_id=art_id),
@@ -97,6 +86,7 @@ def create_app(test_config=None):
         tree = get_tree_with_operator_images(art)
         fig = plot_tree_with_images(tree)
         output = as_bytesio(fig)
+
         w = FileWrapper(output)
         return Response(w, mimetype="image/png", direct_passthrough=True)
 

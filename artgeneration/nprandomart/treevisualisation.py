@@ -4,6 +4,8 @@ functionality to visualise the art object, which is a tree of operators
 
 import ete3
 from itertools import chain
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
 import numpy as np
@@ -92,7 +94,7 @@ def plot_tree_with_images(tree):
 def as_bytesio(fig):
     output = io.BytesIO()
     plt.savefig(output, bbox_inches='tight',format='png')
-    # output.seek(0)
+    plt.close(fig)
     output.seek(0, 0)
     return output
 
