@@ -7,6 +7,10 @@ body {
     text-align: center;
 }
 
+#large_image_file_f {
+    text-align: center;
+}
+
 input {
     font-family: "Century Gothic", Century, serif;
     color: white;

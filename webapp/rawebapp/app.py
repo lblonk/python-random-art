@@ -48,6 +48,7 @@ def create_app(test_config=None):
     def render_page(art_id):
         return render_template('image.html',
                                image_endpoint = url_for('image_file',art_id=art_id),
+                               large_image_endpoint = url_for('large_image_file',art_id=art_id),
                                tree_image_endpoint = url_for('tree_image_file',art_id=art_id))
 
     @app.route('/')
@@ -65,15 +66,31 @@ def create_app(test_config=None):
     @app.route('/image_file/<art_id>')
     def image_file(art_id):
         """
+        rendering for page view
+        """
+        return get_wrapped_image_file(art_id,size=900)
+
+    @app.route('/large_image_file/<art_id>')
+    def large_image_file(art_id):
+        """
+        rendering for printing
+        """
+        return get_wrapped_image_file(art_id,size=4000)
+
+    def get_wrapped_image_file(art_id,size):
+        """
         render and return the image itself
         """
         art = app.arts[art_id]
-        img = get_image(art,size=900)
+        img = get_image(art,size=size)
         output = io.BytesIO()
         img.convert('RGBA').save(output, format='PNG')
         output.seek(0, 0)
         w = FileWrapper(output) #this is needed since Flask's send_file() does not work on pythonanywhere: https://www.pythonanywhere.com/forums/topic/13570/
         return Response(w, mimetype="image/png", direct_passthrough=True)
+
+
+
 
     @app.route('/tree_image_file/<art_id>')
     def tree_image_file(art_id):

@@ -5,15 +5,8 @@
 
 import random
 import numpy as np
-from pathlib import Path
-import json
-this_dir = Path(__file__).parent
+from copy import copy
 
-# load list of interesting mandlebrot locations,
-# courtesy of David Eck: http://math.hws.edu/eck/js/mandelbrot/java/MandelbrotSettings/
-with open(this_dir / 'resources/mandle_locations.json') as f:
-    locations = json.load(f)['locations']
-    locations = [loc for loc in locations if loc['max_iterations'] <= 5000]
 
 np.seterr(divide='ignore', invalid='ignore')
 thumbnail_size = 200
@@ -113,18 +106,7 @@ class Constant(Operator):
                                   np.ones_like(x) * self.c3)
 
 
-class Mandle(Operator):
-    arity = 0
-    mandles = {}
-    def __init__(self): pass
-
-    def __repr__(self): return "mandlebrot"
-
-    @store
-    def eval(self, x, y):
-        mandle = self.mandles[x.shape[0]]
-        return (mandle, mandle, mandle)
-
+from .mandle import Mandle
 
 
 class Average(Operator):
@@ -309,41 +291,13 @@ def generate(k=50, operators=operators):
         return op(*args)
 
 
-def get_art(min_arity=20, max_arity=150,operators=operators):
-
-
-    from copy import copy
+def get_art(min_arity=20, max_arity=150, operators=operators):
     operators_this_art = copy(operators)
-
-
-    # calculate one-off operators
-
     include_fractal = random.choice([True, True, False])  # prevent fractal overdose, sometimes one without
     if include_fractal:
+        Mandle.setup()
         operators_this_art.append(Mandle)
 
-        location = random.choice(locations)
-        xmin = location['limits']['xmin']
-        xmax = location['limits']['xmax']
-        ymin = location['limits']['ymin']
-        ymax = location['limits']['ymax']
-
-        # shift locations a bit otherwise would not be random
-        x_shift = random.uniform(-0.4, 0.4) * (xmax-xmin)
-        xmin += x_shift
-        xmax += x_shift
-        y_shift = random.uniform(-0.4, 0.4) * (ymax-ymin)
-        ymin += y_shift
-        ymax += y_shift
-
-        maxiter = location['max_iterations']
-        from .mandle import mandelbrot_set4
-        img = mandelbrot_set4(xmin, xmax, ymin, ymax, size=900, maxiter=maxiter)
-        Mandle.mandles[900] = img / img.max()
-        img = mandelbrot_set4(xmin, xmax, ymin, ymax, size=thumbnail_size, maxiter=maxiter)
-        Mandle.mandles[thumbnail_size] = img / img.max()
-
-
     # generate operator tree
-    art = generate(random.randrange(min_arity, max_arity),operators=operators_this_art)
+    art = generate(random.randrange(min_arity, max_arity), operators=operators_this_art)
     return art

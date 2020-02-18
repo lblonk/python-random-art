@@ -4,10 +4,91 @@ fast mandlebrot set calculation.
 
 from numba import njit
 import numpy as np
+from pathlib import Path
+import json, random
+from .randomart import Operator, store
+this_dir = Path(__file__).parent
+# load list of interesting mandlebrot locations,
+# courtesy of David Eck: http://math.hws.edu/eck/js/mandelbrot/java/MandelbrotSettings/
+with open(this_dir / 'resources/mandle_locations.json') as f:
+    locations = json.load(f)['locations']
+    locations = [loc for loc in locations if loc['max_iterations'] <= 5000]
+
+
+class Mandle(Operator):
+    arity = 0
+
+    @classmethod
+    def setup(cls):
+        cls.set_random_location()
+
+    @classmethod
+    def set_random_location(cls):
+
+        cls.cache = {}  # cache to store evaluations, as this is a very expensive function
+
+        location = random.choice(locations)
+        cls.xmin = location['limits']['xmin']
+        cls.xmax = location['limits']['xmax']
+        cls.ymin = location['limits']['ymin']
+        cls.ymax = location['limits']['ymax']
+
+        # shift locations a bit, otherwise would not be random
+        x_shift = random.uniform(-0.4, 0.4) * (cls.xmax - cls.xmin)
+        cls.xmin += x_shift
+        cls.xmax += x_shift
+        y_shift = random.uniform(-0.4, 0.4) * (cls.ymax - cls.ymin)
+        cls.ymin += y_shift
+        cls.ymax += y_shift
+
+        cls.maxiter = location['max_iterations']
+
+    def __init__(self):
+        pass
+
+    def __repr__(self):
+        return "Mandlebrot"
+
+    @store
+    def eval(self, x, y):
+
+        size = x.shape[0]  # i.e. 900 pixels
+        try:
+            mandle = self.cache[size]
+        except KeyError:
+            mandle = get_mandlebrot(self.xmin,
+                                    self.xmax,
+                                    self.ymin,
+                                    self.ymax,
+                                    size=size,
+                                    maxiter=self.maxiter)
+            mandle = mandle / mandle.max()
+            self.cache[size] = mandle
+
+        return (mandle, mandle, mandle)
+
 
 
 @njit
-def mandelbrot(creal, cimag, maxiter):
+def get_mandlebrot(xmin, xmax, ymin, ymax, size, maxiter):
+    """
+    fast, numba-based mandlebrot set calculation
+    :return:
+    """
+    print('starting mandlebrot set calculation')
+    real_axis = np.linspace(xmin, xmax, size)
+    imag_axis = np.linspace(ymin, ymax, size)
+    mandle = np.empty((size, size))
+    for i in range(size):
+        for j in range(size):
+            mandle[i, j] = mandelbrot_single_point(real_axis[i], imag_axis[j], maxiter)
+
+    print('finished mandlebrot set calculation')
+    return mandle
+
+
+@njit
+def mandelbrot_single_point(creal, cimag, maxiter):
     """
     largely based on http://numba.pydata.org/numba-doc/0.21.0/user/examples.html
     plus added further optimizations:
@@ -32,15 +113,3 @@ def mandelbrot(creal, cimag, maxiter):
     return 0
 
 
-@njit
-def mandelbrot_set4(xmin, xmax, ymin, ymax, size, maxiter=2500):
-    print('starting mandlebrot set calculation')
-    real_axis = np.linspace(xmin, xmax, size)
-    imag_axis = np.linspace(ymin, ymax, size)
-    n3 = np.empty((size, size))
-    for i in range(size):
-        for j in range(size):
-            n3[i, j] = mandelbrot(real_axis[i], imag_axis[j], maxiter)
-
-    print('finished mandlebrot set calculation')
-    return n3
