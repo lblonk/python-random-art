@@ -75,7 +75,7 @@ def create_app(test_config=None):
         """
         rendering for printing
         """
-        return get_wrapped_image_file(art_id,size=4000)
+        return get_wrapped_image_file(art_id,size=1920)
 
     def get_wrapped_image_file(art_id,size):
         """
