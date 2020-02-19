@@ -51,6 +51,10 @@ class Operator:
         """this must be implemented in subclassed"""
         raise NotImplementedError
 
+    def __getstate__(self):
+        """custom getstate for jsonpickle"""
+        return {k: v for k, v in self.__dict__.items() if k not in ['img']}
+
 
 def store(eval_original):
     """

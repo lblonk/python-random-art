@@ -72,16 +72,10 @@ pre {
 
 }
 
-#HD{
+.bottom_link{
     text-align: center;
     color: grey;
     font-family: 'Century Gothic', serif;
     font-size: 12px;
 }
 
-#source_code{
-    text-align: center;
-    color: grey;
-    font-family: 'Century Gothic', serif;
-    font-size: 12px;
-}

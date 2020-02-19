@@ -4,6 +4,7 @@ from werkzeug.wsgi import FileWrapper
 import uuid
 from .utitlities import LimitedSizeDict
 from nprandomart import tree_as_ascii,get_image, get_art
+import jsonpickle
 
 def create_app(test_config=None):
 
@@ -49,7 +50,8 @@ def create_app(test_config=None):
         return render_template('image.html',
                                image_endpoint = url_for('image_file',art_id=art_id),
                                large_image_endpoint = url_for('large_image_file',art_id=art_id),
-                               tree_image_endpoint = url_for('tree_image_file',art_id=art_id))
+                               tree_image_endpoint = url_for('tree_image_file',art_id=art_id),
+                               tree_file_endpoint =url_for('tree_file',art_id=art_id) )
 
     @app.route('/')
     def index():
@@ -89,8 +91,19 @@ def create_app(test_config=None):
         w = FileWrapper(output) #this is needed since Flask's send_file() does not work on pythonanywhere: https://www.pythonanywhere.com/forums/topic/13570/
         return Response(w, mimetype="image/png", direct_passthrough=True)
 
-
-
+    @app.route('/tree_file/<art_id>')
+    def tree_file(art_id):
+        """
+        return the art as json
+        :return:
+        """
+        art = app.arts[art_id]
+        response = app.response_class(
+            response=jsonpickle.encode(art),
+            status=200,
+            mimetype='application/json'
+        )
+        return response
 
     @app.route('/tree_image_file/<art_id>')
     def tree_image_file(art_id):
