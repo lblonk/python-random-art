@@ -1,10 +1,11 @@
 import os,io
-from flask import Flask, url_for, render_template, Response, Markup, json, jsonify
+from flask import Flask, url_for, render_template, Response, Markup, json, jsonify,request
 from werkzeug.wsgi import FileWrapper
 import uuid
 from .utitlities import LimitedSizeDict
-from nprandomart import tree_as_ascii,get_image, get_art
+from nprandomart import get_image, get_art
 import jsonpickle
+from json.decoder import JSONDecodeError
 
 def create_app(test_config=None):
 
@@ -51,7 +52,8 @@ def create_app(test_config=None):
                                image_endpoint = url_for('image_file',art_id=art_id),
                                large_image_endpoint = url_for('large_image_file',art_id=art_id),
                                tree_image_endpoint = url_for('tree_image_file',art_id=art_id),
-                               tree_file_endpoint =url_for('tree_file',art_id=art_id) )
+                               tree_file_endpoint =url_for('tree_file',art_id=art_id),
+                               tree_file_upload_endpoint = url_for('tree_upload'))
 
     @app.route('/')
     def index():
@@ -97,13 +99,32 @@ def create_app(test_config=None):
         return the art as json
         :return:
         """
+        jsonpickle.set_encoder_options('json', sort_keys=True, indent=4)
         art = app.arts[art_id]
         response = app.response_class(
             response=jsonpickle.encode(art),
             status=200,
-            mimetype='application/json'
+            mimetype='application/json',
+            headers={"Content-disposition":
+                     f"attachment; filename={art_id}.json"} # as attachment; to trigger download
         )
         return response
+
+    @app.route('/tree_upload', methods=['GET', 'POST'])
+    def tree_upload():
+        if request.method == 'POST':
+            f = request.files['file']
+            s = f.read()
+
+            try:
+                art = jsonpickle.decode(s)
+            except JSONDecodeError as e:
+                return f'Invalid JSON file: {e}'
+
+            art_id = uuid.uuid4().hex
+            app.arts[art_id] = art
+            return render_page(art_id)
+
 
     @app.route('/tree_image_file/<art_id>')
     def tree_image_file(art_id):
@@ -121,5 +142,3 @@ def create_app(test_config=None):
         return Response(w, mimetype="image/png", direct_passthrough=True)
 
     return app
-
-

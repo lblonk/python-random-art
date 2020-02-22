@@ -1,15 +1,15 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="{{url_for('static',filename='styles/image.css')}}">
+    <link href="{{url_for('static',filename='styles/image.css')}}" rel="stylesheet">
     <title>image</title>
 </head>
 <body>
 <p>&nbsp</p>
-<form id="new_img_btn_p" action="/higher">
+<form action="/higher" id="new_img_form">
     <input id="new_image_btn"
            type="submit"
-           value="Show Me Something New">
+           value="New Image">
 </form>
 <p>
     <img id="image" src="{{image_endpoint}}">
@@ -18,29 +18,70 @@
 <p>&nbsp</p>
 <p>&nbsp</p>
 <p>&nbsp</p>
-<p>&nbsp</p>
-<p>&nbsp</p>
-<p>&nbsp</p>
-<!--<form id="large_image_file_f" action={{large_image_endpoint}}>-->
-<!--    <input id="large_image_file"-->
-<!--           type="submit"-->
-<!--           value="Get 4K Version (takes ~1 min)">-->
-<!--</form>-->
-<p>&nbsp</p>
+<p></p>
+<div class="bottom_link">
+    <a href="{{tree_file_endpoint}}"
+       title="Get the tree as JSON file. Using this file, you can extract any node that looks nice, and render on your own PC in any desired resolution, using the source code provide in the link below (some python skills required)."
+    >
+        Download tree file (JSON)
+    </a>
+</div>
+<p>
+<div id="upload_div">
+    <form action="{{tree_file_upload_endpoint}}"
+          enctype="multipart/form-data"
+          id="upload_form"
+          method="POST">
+        <label class="upload" for="upload-browse">
+            (Re-)load image from tree file (JSON)
+        </label>
+        <input id="upload-browse"
+               name="file"
+               accept=".json"
+               onchange="form.submit()"
+               type="file"/>
+    </form>
+</div>
+</p>
+<div class="bottom_link">
+    <a href="{{large_image_endpoint}}"
+       target="_blank"
+       title="Get this image in 1920x1920 resolution. Takes 30 seconds or so to render.">
+        Get this image in HD (takes 30 seconds or so)
+    </a>
+</div>
+<p></p>
+<div class="bottom_link">
+    <a href="https://github.com/lblonk/simple-random-art"
+       title="Link to the app's source code on github.">
+        App Source Code
+    </a>
+</div>
 <div id="expression_tree">
-    <p id='expr_title'>Image Tree</p>
-    <p id='expr_extra'>The built -up of the image is shown below.
-        The process is evaluated from right to left.
-        The image is generated use a nested operators (the 'tree').
+
+    <p class='expr_extra'>
+     The image is completely unique and was generated using math only, through the following process:
+    </p>
+    <p class='expr_extra'>
+        1: A tree of operators (shown below) is generated, by an algorithm that makes random choices of the
+        operators to include, <br/>the number of branches and depth of the tree. This process, and the core operators,
+        were developed by Andrej Bauer.
+    </p>
+    <p class='expr_extra'>
+
+        2: The operators are evaluated, starting at the leaves, ending at the root (from right to left in below image),
+        resulting in the final image
+    </p>
+    <p class='expr_extra'>
         Operators are can be simple; for example 'ReturnX' just returns the pixels x -coordinates as values
         for red, green and blue. More complex operators, for example 'Mix' or 'Sine', take the output of one or more
-        other operators and operate on those.
+        other operators and operate on those.<br/> The 'Mandle' operator evaluates the Mandlebrot set,
+        at a random location chosen from an inventory of interesting locations composed by David Eck. <br/>
+        The Mandlebrot operator,  tree visualisation, numpy implementation and this webapp were added by Lindert Blonk
     </p>
     <!--    <div id="ascii_content">-->
     <!--        <pre>{{expression_tree}}</pre>-->
     <!--    </div>-->
-    <p>&nbsp</p>
-    <p>&nbsp</p>
     <p>&nbsp</p>
     <div id="tree_image_content">
         <img id="tree_image" src="{{tree_image_endpoint}}">
@@ -49,27 +90,6 @@
 <p>&nbsp</p>
 <p>&nbsp</p>
 <p>&nbsp</p>
-<div class="bottom_link">
-    <a href="{{large_image_endpoint}}"
-       title="Get this image in 1920x1920 resolution. Takes 30 seconds or so to render." >
-        Get this image in HD (takes 30 seconds or so)
-    </a>
-</div>
-<p></p>
-<div class="bottom_link">
-    <a href="{{tree_file_endpoint}}"
-    title="Get the tree as JSON file. Using this file, you can extract any node that looks nice, and render on your own PC in any desired resolution, using the source code provide in the link below (some python skills required)."
-    >
-        Get tree as JSON for this image
-    </a>
-</div>
-<p></p>
-<div class="bottom_link">
-    <a href="https://github.com/lblonk/simple-random-art"
-    title="Link to the app's source code on github.">
-        Source Code
-    </a>
-</div>
 <p>&nbsp</p>
 </body>
 </html>

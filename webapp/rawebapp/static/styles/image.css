@@ -3,15 +3,11 @@ body {
     margin: auto;
 }
 
-#new_img_btn_p {
+#new_img_form {
     text-align: center;
 }
 
-#large_image_file_f {
-    text-align: center;
-}
-
-input {
+#new_image_btn {
     font-family: "Century Gothic", Century, serif;
     color: white;
     border: none;
@@ -47,10 +43,10 @@ input {
     font-size: 13px;
 }
 
-#expr_extra{
+.expr_extra {
     color: grey;
     font-family: 'Century Gothic', serif;
-    font-size: 10px;
+    font-size: 12px;
 }
 
 #tree_image_content {
@@ -58,24 +54,42 @@ input {
     display: inline-block;
     /*max-width:900px;*/
     max-width: 100vw;
-    overflow-x:scroll;
+    overflow-x: scroll;
 
 }
 
 
-pre {
-    display: inline-block;
-    color: grey;
-    font-size: 12px;
-    text-align: left;
-    font-family: 'Consolas',Consolas ,monospace;
-
-}
-
-.bottom_link{
+#upload_div {
     text-align: center;
-    color: grey;
+}
+
+#upload_form {
+    display: inline-block;
+    position: center;
+    text-align: center;
+}
+
+.upload {
+    display: inline-block;
+    text-align: center;
+    position: center;
+    color: blue;
+    text-decoration: underline;
+    background-color: black;
+    border: none;
+    font-size: 14px;
     font-family: 'Century Gothic', serif;
-    font-size: 12px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.bottom_link {
+    text-align: center;
+    color: white;
+    font-family: 'Century Gothic', serif;
+    font-size: 14px;
+
 }
 
