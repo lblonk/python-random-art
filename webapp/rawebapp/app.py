@@ -2,10 +2,11 @@ import os,io
 from flask import Flask, url_for, render_template, Response, Markup, json, jsonify,request
 from werkzeug.wsgi import FileWrapper
 import uuid
-from .utitlities import LimitedSizeDict
+from .utitlities import LimitedSizeDict, ArtDiskCache
 from nprandomart import get_image, get_art
 import jsonpickle
 from json.decoder import JSONDecodeError
+from pathlib import Path
 
 def create_app(test_config=None):
 
@@ -30,7 +31,8 @@ def create_app(test_config=None):
 
     # a dict to hold the arts (expression trees) in memory so they can be used by multiple functions
     # (only the key 'art_id' is passed in the url to the endpoints)
-    app.arts = LimitedSizeDict(size_limit=200)
+    print(app.instance_path)
+    app.arts = ArtDiskCache(directory= Path(app.instance_path) / 'cache' , size_limit = 8e6) # LimitedSizeDict(size_limit=200)
 
     def get_art_id(min_arity = 20, max_arity = 150):
         """
@@ -39,12 +41,13 @@ def create_app(test_config=None):
         :param max_arity: maximum complexity of the art
         """
         art_id = uuid.uuid4().hex
+        print(art_id)
 
         # make expression tree
         art = get_art(min_arity , max_arity)
 
         # store so it can be passed to other app functions by id
-        app.arts[art_id] = art
+        app.arts.store_art(art_id,art)
         return art_id
 
     def render_page(art_id):
@@ -85,7 +88,7 @@ def create_app(test_config=None):
         """
         render and return the image itself
         """
-        art = app.arts[art_id]
+        art = app.arts.get_art(art_id)
         img = get_image(art,size=size)
         output = io.BytesIO()
         img.convert('RGBA').save(output, format='PNG')
@@ -100,7 +103,7 @@ def create_app(test_config=None):
         :return:
         """
         jsonpickle.set_encoder_options('json', sort_keys=True, indent=4)
-        art = app.arts[art_id]
+        art = app.arts.get_art(art_id)
         response = app.response_class(
             response=jsonpickle.encode(art),
             status=200,
@@ -122,7 +125,7 @@ def create_app(test_config=None):
                 return f'Invalid JSON file: {e}'
 
             art_id = uuid.uuid4().hex
-            app.arts[art_id] = art
+            app.arts.store_art(art_id, art)
             return render_page(art_id)
 
 
@@ -131,7 +134,7 @@ def create_app(test_config=None):
         """
         render and return the image itself
         """
-        art = app.arts[art_id]
+        art = app.arts.get_art(art_id)
         get_image(art, size = 200)
         from nprandomart.treevisualisation import get_tree_with_operator_images,plot_tree_with_images, as_bytesio
         tree = get_tree_with_operator_images(art)

@@ -15,3 +15,18 @@ class LimitedSizeDict(OrderedDict):
         if self.size_limit is not None:
             while len(self) > self.size_limit:
                 self.popitem(last=False)
+
+
+from diskcache import Cache
+import jsonpickle
+
+class ArtDiskCache(Cache):
+
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+    def store_art(self,id,art):
+        self[id] = jsonpickle.encode(art)
+
+    def get_art(self,id):
+        return jsonpickle.decode(self[id])
