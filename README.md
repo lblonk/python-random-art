@@ -1,5 +1,9 @@
-Developed as occasional past-time;
+
 A python-based random art generation app.
+
+### Website ###
+
+http://randomart.pythonanywhere.com/
 
 ### Summary ###
 
@@ -10,10 +14,6 @@ Consists of:
  Andrej Bauer's Simple Random Art educational program.
 
 - A web app (flask app)
-
-### Demo ###
-
-A demo is provided on http://blnkl.pythonanywhere.com
 
 ### Installation instructions; ###
 
