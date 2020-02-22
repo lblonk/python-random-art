@@ -32,9 +32,10 @@ def create_app(test_config=None):
     # a dict to hold the arts (expression trees) in memory so they can be used by multiple functions
     # (only the key 'art_id' is passed in the url to the endpoints)
     print(app.instance_path)
-    app.arts = ArtDiskCache(directory= Path(app.instance_path) / 'cache' , size_limit = 8e6) # LimitedSizeDict(size_limit=200)
+    app.arts = ArtDiskCache(directory=Path(app.instance_path) / 'cache',
+                            size_limit=8e6)  # LimitedSizeDict(size_limit=200)
 
-    def get_art_id(min_arity = 20, max_arity = 150):
+    def get_art_id(min_arity=20, max_arity=150):
         """
         generate and store the art (expression tree), return its id
         :param min_arity: minimum complexity of the art

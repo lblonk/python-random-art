@@ -1,7 +1,16 @@
+
+/*html{font-size:100%;}*/
+/*@media(min-width:60em){html{font-size: 14px}}*/
+
+
 body {
     background-color: black;
     margin: auto;
+    font-size: 2.5vw;
+
 }
+/*@media(min-width:1000px){body{font-size: 2vw}}*/
+
 
 #new_img_form {
     text-align: center;
@@ -13,7 +22,7 @@ body {
     border: none;
     position: center;
     padding: 15px 32px;
-    font-size: 16px;
+    font-size: 110%;
     text-align: center;
     display: inline-block;
     background-color: dimgrey;
@@ -40,13 +49,13 @@ body {
 #expr_title {
     color: grey;
     font-family: 'Century Gothic', serif;
-    font-size: 13px;
+    font-size: 100%;
 }
 
 .expr_extra {
     color: grey;
     font-family: 'Century Gothic', serif;
-    font-size: 12px;
+    font-size: 80%;
 }
 
 #tree_image_content {
@@ -77,7 +86,7 @@ body {
     text-decoration: underline;
     background-color: black;
     border: none;
-    font-size: 14px;
+    font-size: 100%;
     font-family: 'Century Gothic', serif;
 }
 
@@ -89,7 +98,7 @@ input[type="file"] {
     text-align: center;
     color: white;
     font-family: 'Century Gothic', serif;
-    font-size: 14px;
+    font-size: 100%;
 
 }
 
