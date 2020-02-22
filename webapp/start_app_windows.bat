@@ -1,4 +1,4 @@
 set FLASK_ENV=development
 set FLASK_APP=rawebapp
-flask run
+flask run --with-threads
 
