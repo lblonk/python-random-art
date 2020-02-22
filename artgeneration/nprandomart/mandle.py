@@ -50,15 +50,19 @@ class Mandle(Operator):
         return "Mandlebrot"
 
     def __getstate__(self):
-        """custom getstate for jsonpickle"""
-        class_state = {k: self.__class__.__dict__[k] for k in ['xmin', 'xmax','ymin','ymax','maxiter']}
-        return class_state
+        """
+        Custom getstate for to give desired encode behavior when using jsonpickle
+        """
+        state = {k: getattr(self, k) for k in ['xmin', 'xmax', 'ymin', 'ymax', 'maxiter']}
+        return state
 
-    def __setstate__(self,state):
-        """custom setstate for jsonpickle"""
+    def __setstate__(self, state):
+        """
+        Custom getstate for to give desired decode behavior when using jsonpickle
+        """
         self.__class__.cache = {}
-        self.__class__.__dict__.update(state)
-
+        for k, v in state.items():
+            setattr(self, k, v)
 
     @store
     def eval(self, x, y):
