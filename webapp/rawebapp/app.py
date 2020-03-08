@@ -145,4 +145,8 @@ def create_app(test_config=None):
         w = FileWrapper(output)
         return Response(w, mimetype="image/png", direct_passthrough=True)
 
+    @app.route('/gallery')
+    def gallery():
+        return render_template('gallery.html')
+
     return app
