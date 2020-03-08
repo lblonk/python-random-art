@@ -17,7 +17,7 @@
 <div id="loading_text"  >
     <p>&nbsp</p>
     <p>&nbsp</p>
-    <p id="loading_text_inner" >. creating .</p>
+    <p id="loading_text_inner" ></p>
     <p>&nbsp</p>
     <p>&nbsp</p>
 </div>
@@ -27,56 +27,47 @@
     }
     async function incrementLoadingText() {
         let par = document.getElementById("loading_text_inner");
-        // for (let i = 0; i < 3; i++) {
-        //     await sleep(500);
-        //     par.textContent = "." +par.textContent + ".";
-        // }
         par.textContent =". creating .";
         for (let i = 0; i < 40; i++) {
             await sleep(500);
             par.textContent = "." + par.textContent + ".";
-
         }
-
     }
-
     incrementLoadingText()
 </script>
 <img id="image" src="{{image_endpoint}}">
-<script>
-
-    function fadeIn(el, time) {
-      el.style.opacity = 0;
-
-      var last = +new Date();
-      var tick = function() {
-        el.style.opacity = +el.style.opacity + (new Date() - last) / time;
-        last = +new Date();
-
-        if (+el.style.opacity < 1) {
-          (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16);
-        }
-      };
-
-      tick();
-    }
-
-    function removeLoadingText(){
-        document.getElementById("loading_text").style.display = "none"
-        document.getElementById("image").style.display = "block"
-        fadeIn(document.getElementById("image"), 3000)
-
-    }
-
-    document.getElementById("image").onload = removeLoadingText
-</script>
 <p>&nbsp</p>
 <p>&nbsp</p>
 <p>&nbsp</p>
 <div >
     <img id="tree_image_content" src="{{tree_image_endpoint}}">
-
 </div>
+<script>
+    function fadeIn(el1,el2, time) {
+      el1.style.opacity = 0;
+      el2.style.opacity = 0;
+      var last = +new Date();
+      var tick = function() {
+        el1.style.opacity = +el1.style.opacity + (new Date() - last) / time;
+        el2.style.opacity = +el2.style.opacity + (new Date() - last) / time;
+        last = +new Date();
+        if (+el1.style.opacity < 1) {
+          (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16);
+        }
+      };
+      tick();
+    }
+
+    function unveilImage(){
+        document.getElementById("loading_text").style.display = "none";
+        document.getElementById("image").style.display = "block";
+        document.getElementById("tree_image_content").style.display = "inline-block";
+        fadeIn(document.getElementById("image"), document.getElementById("tree_image_content"),3000);
+    }
+
+    document.getElementById("image").onload = unveilImage;
+
+</script>
 <p>&nbsp</p>
 <p></p>
 <div class="bottom_link">
@@ -86,6 +77,7 @@
         Download tree file
     </a>
 </div>
+
 <p>
 <div id="upload_div">
     <form action="{{tree_file_upload_endpoint}}"

@@ -85,7 +85,7 @@ a { text-decoration: underline;
 #tree_image_content {
     position :center;
     text-align: center;
-    display: block;
+    display: none;
     margin-left: auto;
     margin-right: auto;
     /*max-width:900px;*/
@@ -93,11 +93,6 @@ a { text-decoration: underline;
     overflow-x: scroll;
     /*min-height: 900px;*/
 
-}
-
-#tree_image {
-    display: inline-block;
-    position :center;
 }
 
 #upload_div {
