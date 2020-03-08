@@ -37,7 +37,7 @@ a { text-decoration: underline;
 #image {
     /*font-family: 'Century Gothic', serif;*/
     position: center;
-    display: block;
+    display: none;
     margin-left: auto;
     margin-right: auto;
     text-align: center;

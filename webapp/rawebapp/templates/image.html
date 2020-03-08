@@ -32,11 +32,10 @@
         //     par.textContent = "." +par.textContent + ".";
         // }
         par.textContent =". creating .";
-        for (let i = 0; i < 2000; i++) {
-            await sleep(5);
-            if (i % 100 === 0){
-                par.textContent = "." + par.textContent + ".";
-            }
+        for (let i = 0; i < 40; i++) {
+            await sleep(500);
+            par.textContent = "." + par.textContent + ".";
+
         }
 
     }
@@ -45,8 +44,28 @@
 </script>
 <img id="image" src="{{image_endpoint}}">
 <script>
+
+    function fadeIn(el, time) {
+      el.style.opacity = 0;
+
+      var last = +new Date();
+      var tick = function() {
+        el.style.opacity = +el.style.opacity + (new Date() - last) / time;
+        last = +new Date();
+
+        if (+el.style.opacity < 1) {
+          (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16);
+        }
+      };
+
+      tick();
+    }
+
     function removeLoadingText(){
-        document.getElementById("loading_text").remove()
+        document.getElementById("loading_text").style.display = "none"
+        document.getElementById("image").style.display = "block"
+        fadeIn(document.getElementById("image"), 3000)
+
     }
 
     document.getElementById("image").onload = removeLoadingText
