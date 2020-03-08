@@ -9,11 +9,28 @@
 <form action="/higher" id="new_img_form">
     <input id="new_image_btn"
            type="submit"
-           value="New Image">
+           value="Creating...">
 </form>
+
 <p>
     <img id="image" src="{{image_endpoint}}">
 </p>
+<script>
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function showNewImageButton() {
+        let btn = document.getElementById("new_image_btn");
+        btn.value = " New Image ";
+        btn.style.backgroundColor = "dimgrey";
+        // var x = document.getElementById("new_img_form");
+        // x.style.display = "block";
+        // await sleep(5000);
+    }
+
+    document.getElementById("image").onload = showNewImageButton
+</script>
 <p>&nbsp</p>
 <p>&nbsp</p>
 <p>&nbsp</p>
