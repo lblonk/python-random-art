@@ -59,13 +59,21 @@
     }
 
     function unveilImage(){
-        document.getElementById("loading_text").style.display = "none";
-        document.getElementById("image").style.display = "block";
-        document.getElementById("tree_image_content").style.display = "inline-block";
-        fadeIn(document.getElementById("image"), document.getElementById("tree_image_content"),3000);
+
+        if (document.getElementById("image").complete &&
+            document.getElementById("tree_image_content").complete &&
+            document.getElementById("loading_text" ).style.display !== "none")
+        {
+                document.getElementById("loading_text").style.display = "none";
+                document.getElementById("image").style.display = "block";
+                document.getElementById("tree_image_content").style.display = "inline-block";
+                fadeIn(document.getElementById("image"), document.getElementById("tree_image_content"),3000);
+        }
+
     }
 
     document.getElementById("image").onload = unveilImage;
+    document.getElementById("tree_image_content").onload = unveilImage;
 
 </script>
 <p>&nbsp</p>
