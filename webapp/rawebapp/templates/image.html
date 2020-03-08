@@ -39,9 +39,7 @@
 <p>&nbsp</p>
 <p>&nbsp</p>
 <p>&nbsp</p>
-<div >
-    <img id="tree_image_content" src="{{tree_image_endpoint}}">
-</div>
+<img id="tree_image_content" src="{{tree_image_endpoint}}">
 <script>
     function fadeIn(el1,el2, time) {
       el1.style.opacity = 0;
@@ -72,6 +70,7 @@
 
     }
 
+    document.getElementById("tree_image_content").style.display = "none";
     document.getElementById("image").onload = unveilImage;
     document.getElementById("tree_image_content").onload = unveilImage;
 
