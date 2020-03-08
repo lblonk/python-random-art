@@ -17,7 +17,7 @@
 <div id="loading_text"  >
     <p>&nbsp</p>
     <p>&nbsp</p>
-    <p id="loading_text_inner" ></p>
+    <p id="loading_text_inner" >. creating .</p>
     <p>&nbsp</p>
     <p>&nbsp</p>
 </div>
@@ -32,10 +32,13 @@
         //     par.textContent = "." +par.textContent + ".";
         // }
         par.textContent =". creating .";
-        for (let i = 0; i < 200; i++) {
-            await sleep(500);
-            par.textContent = "." +par.textContent + ".";
+        for (let i = 0; i < 2000; i++) {
+            await sleep(5);
+            if (i % 100 === 0){
+                par.textContent = "." + par.textContent + ".";
+            }
         }
+
     }
 
     incrementLoadingText()
