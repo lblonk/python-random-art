@@ -3,47 +3,65 @@
 <head>
     <link href="{{url_for('static',filename='styles/image.css')}}" rel="stylesheet">
     <title>image</title>
+
 </head>
-<body>
+<body >
 <p>&nbsp</p>
 <form action="/higher" id="new_img_form">
     <input id="new_image_btn"
            type="submit"
-           value="Creating...">
+           value=" New Image ">
 </form>
+<p>&nbsp</p>
 
-<p>
-    <img id="image" src="{{image_endpoint}}">
-</p>
+<div id="loading_text"  >
+    <p>&nbsp</p>
+    <p>&nbsp</p>
+    <p id="loading_text_inner" ></p>
+    <p>&nbsp</p>
+    <p>&nbsp</p>
+</div>
 <script>
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
-
-    async function showNewImageButton() {
-        let btn = document.getElementById("new_image_btn");
-        btn.value = " New Image ";
-        btn.style.backgroundColor = "dimgrey";
-        // var x = document.getElementById("new_img_form");
-        // x.style.display = "block";
-        // await sleep(5000);
+    async function incrementLoadingText() {
+        let par = document.getElementById("loading_text_inner");
+        // for (let i = 0; i < 3; i++) {
+        //     await sleep(500);
+        //     par.textContent = "." +par.textContent + ".";
+        // }
+        par.textContent =". creating .";
+        for (let i = 0; i < 200; i++) {
+            await sleep(500);
+            par.textContent = "." +par.textContent + ".";
+        }
     }
 
-    document.getElementById("image").onload = showNewImageButton
+    incrementLoadingText()
+</script>
+<img id="image" src="{{image_endpoint}}">
+<script>
+    function removeLoadingText(){
+        document.getElementById("loading_text").remove()
+    }
+
+    document.getElementById("image").onload = removeLoadingText
 </script>
 <p>&nbsp</p>
 <p>&nbsp</p>
 <p>&nbsp</p>
-<p >
+<div >
     <img id="tree_image_content" src="{{tree_image_endpoint}}">
-</p>
+
+</div>
 <p>&nbsp</p>
 <p></p>
 <div class="bottom_link">
     <a href="{{tree_file_endpoint}}"
        title="Get the tree as JSON file. Using this file, you can extract any node that looks nice, and render on your own PC in any desired resolution, using the source code provide in the link below (some python skills required)."
     >
-        Download tree file (JSON)
+        Download tree file
     </a>
 </div>
 <p>
@@ -53,7 +71,7 @@
           id="upload_form"
           method="POST">
         <label class="upload" for="upload-browse">
-            (Re-)load image from tree file (JSON)
+            Load from tree file
         </label>
         <input id="upload-browse"
                name="file"
@@ -67,20 +85,22 @@
     <a href="{{large_image_endpoint}}"
        target="_blank"
        title="Get this image in 1920x1920 resolution. Takes 30 seconds or so to render.">
-        Get this image in HD (takes 30 seconds or so)
+        Get image in HD
     </a>
 </div>
 <p></p>
 <div class="bottom_link">
     <a href="https://github.com/lblonk/simple-random-art"
        title="Link to the app's source code on github.">
-        App Source Code
+        App source code
     </a>
 </div>
 <div id="expression_tree">
-
     <p class='expr_extra'>
-     The image is completely unique and was generated using math only, through the following process:
+     Press the 'New Image' button (top of page) to generate a different tree & image
+    </p>
+    <p class='expr_extra'>
+     The images are unique and are generated using math only, through the following process:
     </p>
     <p class='expr_extra'>
         1: A tree of operators (shown above) is generated, by an algorithm that makes random choices of the
