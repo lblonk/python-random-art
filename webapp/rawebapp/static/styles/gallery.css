@@ -6,9 +6,10 @@
 body {
     background-color: black;
     margin: auto;
-    font-size: 2.0vh;
-    color: white;
+    font-size:1.0vw;
+    color: grey;
     font-family: "Century Gothic", Lato, AppleGothic, "URW Gothic L", "Avant Garde", Futura, sans-serif;
+    text-align: center;
 }
 
 .gallery_image {
