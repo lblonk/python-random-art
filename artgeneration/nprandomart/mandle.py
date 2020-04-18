@@ -77,7 +77,10 @@ class Mandle(Operator):
                                     self.ymax,
                                     size=size,
                                     maxiter=self.maxiter)
-            mandle = mandle / mandle.max()
+
+            normalize_to_one = random.choice([True, False, False]) # when not normalizing, it gives nice glitchy effects
+            if normalize_to_one:
+                mandle = mandle / mandle.max()
             self.cache[size] = mandle
 
         return (mandle, mandle, mandle)
